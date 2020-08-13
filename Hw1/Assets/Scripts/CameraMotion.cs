@@ -15,7 +15,7 @@ public class CameraMotion : MonoBehaviour
     {
         _speed = 0f;
         _rotationAngle = 0f;
-        _angularSpeed = 0.5f;
+        _angularSpeed = 5f;
         _character = GetComponent<CharacterController>();
     }
 
@@ -24,10 +24,23 @@ public class CameraMotion : MonoBehaviour
     {
         float mouse_x = Input.GetAxis("Mouse X");
 
-        if (Input.GetKey(KeyCode.W))
-            _speed += 1f;
-        else if (Input.GetKey(KeyCode.S))
-            _speed -= 0.05f;
+        if (Input.GetKey(KeyCode.W))    // while W key is pushed
+        {
+            while (_speed < 20f)    // increase velocity gradually
+            {
+                _speed += 5f;
+            }
+            _speed = 20f;   // max velocity
+        }
+
+        else // W key is not pushed
+        {   
+            while (_speed > 0f) // dicrease velocity
+            {
+                _speed -= 5f;
+            }
+            _speed = 0f;    // stop
+        }
 
         //Sets sight firection by means of transform.Rotate
         _rotationAngle += mouse_x * _angularSpeed * Time.deltaTime;
